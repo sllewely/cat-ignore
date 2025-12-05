@@ -2,6 +2,12 @@
 
 Get the attention of your cat
 
+
+
+https://github.com/user-attachments/assets/808fa110-1e17-48e3-a6b3-7a00c8a400c3
+
+
+
 ## About RCade
 
 This game is built for [RCade](https://rcade.recurse.com), a custom arcade cabinet at The Recurse Center. Learn more about the project at [github.com/fcjr/RCade](https://github.com/fcjr/RCade).
