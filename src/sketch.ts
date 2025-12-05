@@ -13,6 +13,9 @@ const MIN_BUBBLE_COUNT = 3;
 
 // Bubble constants
 const BUBBLE_ANIMATION_DURATION = 200;
+const BUBBLE_WIDTH = 120;
+const BUBBLE_HEIGHT = 40;
+const BUBBLE_X_OFFSET = 40;
 
 let sittingcat: p5.Image;
 let thwap1: p5.Image;
@@ -30,13 +33,25 @@ const drawBubble = (p: p5, x: number, y: number, text: string) => {
     p.fill(255);
     p.stroke(0);
     p.strokeWeight(1);
-    p.rect(x, y, 120, 40, 20);
+    p.rect(x, y, BUBBLE_WIDTH, BUBBLE_HEIGHT, 20);
 
     // draw triangle pointer
-    if (x > WIDTH/2) {
-        p.triangle(x + 40 - 10, y + 40, x + 40 + 10, y + 40, x + 100, y + 80);
+    if (x > WIDTH / 2) {
+        p.triangle(
+            x + BUBBLE_X_OFFSET - 10,
+            y + BUBBLE_HEIGHT,
+            x + BUBBLE_X_OFFSET + 10,
+            y + BUBBLE_HEIGHT,
+            x + BUBBLE_WIDTH - 20,
+            y + BUBBLE_HEIGHT * 2);
     } else {
-        p.triangle(x + 40 - 10, y + 40, x + 40 + 10, y + 40, x - 20, y + 80);
+        p.triangle(
+            x + BUBBLE_X_OFFSET - 10,
+            y + BUBBLE_HEIGHT,
+            x + BUBBLE_X_OFFSET + 10,
+            y + BUBBLE_HEIGHT,
+            x - 20,
+            y + BUBBLE_HEIGHT * 2);
     }
 
     // draw text
