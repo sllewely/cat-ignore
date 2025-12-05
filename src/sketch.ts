@@ -17,7 +17,7 @@ let thwap3: p5.Image;
 
 const cat_pos = { x: (WIDTH / 2), y: (HEIGHT / 2) - 32 };
 
-const drawBubble = (p: p5, x: number, y: number, size: number) => {
+const drawBubble = (p: p5, x: number, y: number, size: number, text: string) => {
     // press a button
     // display the speech bubble
     // it persists for a short amount of time
@@ -36,10 +36,7 @@ const drawBubble = (p: p5, x: number, y: number, size: number) => {
     p.noStroke();
     p.textSize(12);
     p.textAlign(p.CENTER, p.CENTER);
-    p.text("I love you cat", 120, 60);
-
-    
-
+    p.text(text, 120, 60);
 };
 
 const sketch = (p: p5) => {
@@ -125,7 +122,7 @@ const sketch = (p: p5) => {
             animated = true;
         }
         if (upBubble.durationRemaining > 0) {
-            upBubble.draw(p, cat_pos.x, cat_pos.y - 50, 1);
+            upBubble.draw(p, cat_pos.x, cat_pos.y - 50, 1, upBubble.text);
             upBubble.durationRemaining--;
         } else {
             frameCount = 0;
