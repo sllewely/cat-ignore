@@ -17,10 +17,22 @@ let thwap3: p5.Image;
 
 const cat_pos = { x: (WIDTH / 2), y: (HEIGHT / 2) - 32 };
 
+const drawBubble = (p: p5, x: number, y: number, size: number) => {
+    // press a button
+    // display the speech bubble
+    // it persists for a short amount of time
+
+    p.fill(255);
+    p.stroke(0);
+    p.strokeWeight(1);
+    p.rect(80, 40, 80, 40, 20);
+
+};
+
 const sketch = (p: p5) => {
     let x: number;
     let y: number;
-    let animated : bool;
+    let animated : boolean;
     let currentFrame = 0;
     let frameCount = 0;
     const speed = 4;
@@ -41,6 +53,13 @@ const sketch = (p: p5) => {
         y = HEIGHT / 2;
         animated = false;
     };
+
+    let upBubble = {
+        durationRemaining: 0,
+        text: "I love you cat",
+        draw: drawBubble,
+    };
+
 
     p.draw = () => {
         p.background(200, 240, 120);
@@ -87,6 +106,18 @@ const sketch = (p: p5) => {
         p.image(currentCatImage,
             cat_pos.x - currentCatImage.width / 2,
             cat_pos.y - currentCatImage.height / 2);
+
+
+
+        // Draw bubble when pressing up
+        if (PLAYER_1.DPAD.up) {
+        
+            upBubble.durationRemaining = 200;
+        }
+        if (upBubble.durationRemaining > 0) {
+            upBubble.draw(p, cat_pos.x, cat_pos.y - 50, 1);
+            upBubble.durationRemaining--;
+        }
 
         // Make cat animated when pressing A
         if (PLAYER_1.A) {
