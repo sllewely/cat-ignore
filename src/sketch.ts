@@ -2,6 +2,11 @@ import p5 from "p5";
 
 import { PLAYER_1, SYSTEM } from "@rcade/plugin-input-classic";
 
+import cat1 from '../assets/00_Catthwap.png';
+import cat2 from '../assets/01_Catthwap.png';
+import cat3 from '../assets/02_Catthwap.png';
+import cat4 from '../assets/03_Catthwap.png';
+
 // Rcade game dimensions
 const WIDTH = 336;
 const HEIGHT = 262;
@@ -77,10 +82,10 @@ const sketch = (p: p5) => {
     let gameStarted = false;
 
     p.preload = () => {
-        sittingcat = p.loadImage('../assets/00_Catthwap.png');
-        thwap1 = p.loadImage('../assets/01_Catthwap.png');
-        thwap2 = p.loadImage('../assets/02_Catthwap.png');
-        thwap3 = p.loadImage('../assets/03_Catthwap.png');
+        sittingcat = p.loadImage(cat1);
+        thwap1 = p.loadImage(cat2);
+        thwap2 = p.loadImage(cat3);
+        thwap3 = p.loadImage(cat4);
     };
 
     p.setup = () => {
