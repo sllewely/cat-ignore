@@ -140,6 +140,13 @@ const sketch = (p: p5) => {
             cat_pos.x - currentCatImage.width / 2,
             cat_pos.y - currentCatImage.height / 2);
 
+
+        // draw rectangle under the cat
+        p.fill(100, 200, 100);
+        p.noStroke();
+        p.rect(0, cat_pos.y + 32, WIDTH, HEIGHT - (cat_pos.y + 32));
+
+
         // Draw bubble when pressing up
         if (PLAYER_1.DPAD.up) {
             upBubble.durationRemaining = 200;
