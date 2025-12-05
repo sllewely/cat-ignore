@@ -43,7 +43,12 @@ const sketch = (p: p5) => {
     let currentFrame = 0;
     let frameCount = 0;
     let bubbleCount = 0;
+    // detect key presses
     let upActive = false;
+    let leftActive = false;
+    let rightActive = false;
+    let downActive = false;
+    
     let gameStarted = false;
 
     p.preload = () => {
@@ -61,6 +66,12 @@ const sketch = (p: p5) => {
     let upBubble = {
         durationRemaining: 0,
         text: "I love you cat",
+        draw: drawBubble,
+    };
+
+    let leftBubble = {
+        durationRemaining: 0,
+        text: "Hi Sauce baby",
         draw: drawBubble,
     };
 
@@ -115,6 +126,7 @@ const sketch = (p: p5) => {
             upBubble.durationRemaining = 200;
             upActive = true
         } else {
+            // release the key
             if (upActive) {
                 bubbleCount++;
                 if (bubbleCount >= MIN_BUBBLE_COUNT) {
@@ -131,6 +143,27 @@ const sketch = (p: p5) => {
         } else {
             frameCount = 0;
             animated = false
+        }
+
+        // Draw bubble when pressing left
+        if (PLAYER_1.DPAD.left) {
+            leftBubble.durationRemaining = 200;
+            leftActive = true
+        } else {
+            // release the key
+            if (leftActive) {
+                bubbleCount++;
+                if (bubbleCount >= MIN_BUBBLE_COUNT) {
+                    animated = true;
+                    bubbleCount = 0;
+                }
+                leftActive = false
+            }
+        }
+
+        if (leftBubble.durationRemaining > 0) {
+            leftBubble.draw(p, 20, 140, 1, leftBubble.text);
+            leftBubble.durationRemaining--;
         }
     };
 };
