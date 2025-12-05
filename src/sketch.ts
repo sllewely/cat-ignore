@@ -9,8 +9,6 @@ const HEIGHT = 262;
 const ANIMATION_FRAMES = 10;
 const MIN_BUBBLE_COUNT = 3;
 
-let spritesheet: p5.Image;
-
 let sittingcat: p5.Image;
 let thwap1: p5.Image;
 let thwap2: p5.Image;
@@ -18,7 +16,7 @@ let thwap3: p5.Image;
 
 const cat_pos = { x: (WIDTH / 2), y: (HEIGHT / 2) - 32 };
 
-const drawBubble = (p: p5, x: number, y: number, size: number, text: string) => {
+const drawBubble = (p: p5, x: number, y: number, text: string) => {
     // press a button
     // display the speech bubble
     // it persists for a short amount of time
@@ -27,7 +25,6 @@ const drawBubble = (p: p5, x: number, y: number, size: number, text: string) => 
     p.fill(255);
     p.stroke(0);
     p.strokeWeight(1);
-    // p.rect(80, 40, 80, 40, 20);
     p.rect(x, y, 80, 40, 20);
 
     // draw arrow
@@ -42,19 +39,14 @@ const drawBubble = (p: p5, x: number, y: number, size: number, text: string) => 
 };
 
 const sketch = (p: p5) => {
-    let x: number;
-    let y: number;
     let animated : boolean;
     let currentFrame = 0;
     let frameCount = 0;
     let bubbleCount = 0;
     let upActive = false;
-    const speed = 4;
-    const ballSize = 20;
     let gameStarted = false;
 
     p.preload = () => {
-        spritesheet = p.loadImage('../assets/Catthwap.png');
         sittingcat = p.loadImage('../assets/00_Catthwap.png');
         thwap1 = p.loadImage('../assets/01_Catthwap.png');
         thwap2 = p.loadImage('../assets/02_Catthwap.png');
@@ -63,8 +55,6 @@ const sketch = (p: p5) => {
 
     p.setup = () => {
         p.createCanvas(WIDTH, HEIGHT);
-        x = WIDTH / 2;
-        y = HEIGHT / 2;
         animated = false;
     };
 
@@ -136,7 +126,7 @@ const sketch = (p: p5) => {
         }
 
         if (upBubble.durationRemaining > 0) {
-            upBubble.draw(p, 40, 40, 1, upBubble.text);
+            upBubble.draw(p, 40, 40, upBubble.text);
             upBubble.durationRemaining--;
         } else {
             frameCount = 0;
