@@ -26,17 +26,18 @@ const drawBubble = (p: p5, x: number, y: number, size: number, text: string) => 
     p.fill(255);
     p.stroke(0);
     p.strokeWeight(1);
-    p.rect(80, 40, 80, 40, 20);
+    // p.rect(80, 40, 80, 40, 20);
+    p.rect(x, y, 80, 40, 20);
 
     // draw arrow
-    p.triangle(120 - 10, 80, 120 + 10, 80, 60, 120);
+    p.triangle(x + 40 - 10, y + 40, x + 40 + 10, y + 40, x - 20, y + 80);
 
     // draw text
     p.fill(0);
     p.noStroke();
     p.textSize(12);
     p.textAlign(p.CENTER, p.CENTER);
-    p.text(text, 120, 60);
+    p.text(text, x + 40, y + 20);
 };
 
 const sketch = (p: p5) => {
@@ -122,7 +123,7 @@ const sketch = (p: p5) => {
             animated = true;
         }
         if (upBubble.durationRemaining > 0) {
-            upBubble.draw(p, cat_pos.x, cat_pos.y - 50, 1, upBubble.text);
+            upBubble.draw(p, 40, 40, 1, upBubble.text);
             upBubble.durationRemaining--;
         } else {
             frameCount = 0;
