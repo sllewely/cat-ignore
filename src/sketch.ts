@@ -2,10 +2,10 @@ import p5 from "p5";
 
 import { PLAYER_1, SYSTEM } from "@rcade/plugin-input-classic";
 
-import cat1 from '../assets/00_Catthwap.png';
-import cat2 from '../assets/01_Catthwap.png';
-import cat3 from '../assets/02_Catthwap.png';
-import cat4 from '../assets/03_Catthwap.png';
+import cat1 from '/00_Catthwap.png';
+import cat2 from '/01_Catthwap.png';
+import cat3 from '/02_Catthwap.png';
+import cat4 from '/03_Catthwap.png';
 
 // Rcade game dimensions
 const WIDTH = 336;
