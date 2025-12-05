@@ -6,9 +6,13 @@ import { PLAYER_1, SYSTEM } from "@rcade/plugin-input-classic";
 const WIDTH = 336;
 const HEIGHT = 262;
 
+// Cat animation constants
 const CAT_ANIMATION_DURATION = 300;
 const ANIMATION_FRAMES = 10;
 const MIN_BUBBLE_COUNT = 3;
+
+// Bubble constants
+const BUBBLE_ANIMATION_DURATION = 200;
 
 let sittingcat: p5.Image;
 let thwap1: p5.Image;
@@ -34,7 +38,6 @@ const drawBubble = (p: p5, x: number, y: number, text: string) => {
     } else {
         p.triangle(x + 40 - 10, y + 40, x + 40 + 10, y + 40, x - 20, y + 80);
     }
-    
 
     // draw text
     p.fill(0);
@@ -112,7 +115,7 @@ const sketch = (p: p5) => {
             return;
         }
 
-        // Draw cat
+        // Choose cat image
         let currentCatImage = sittingcat;
         if (animated) {
             frameCount++;
@@ -136,20 +139,9 @@ const sketch = (p: p5) => {
             }
         }
 
-        p.image(currentCatImage,
-            cat_pos.x - currentCatImage.width / 2,
-            cat_pos.y - currentCatImage.height / 2);
-
-
-        // draw rectangle under the cat
-        p.fill(100, 200, 100);
-        p.noStroke();
-        p.rect(0, cat_pos.y + 32, WIDTH, HEIGHT - (cat_pos.y + 32));
-
-
         // Draw bubble when pressing up
         if (PLAYER_1.DPAD.up) {
-            upBubble.durationRemaining = 200;
+            upBubble.durationRemaining = BUBBLE_ANIMATION_DURATION;
             upActive = true
         } else {
             // release the key
@@ -163,14 +155,9 @@ const sketch = (p: p5) => {
             }
         }
 
-        if (upBubble.durationRemaining > 0) {
-            upBubble.draw(p, 40, 40, upBubble.text);
-            upBubble.durationRemaining--;
-        }
-
         // Draw bubble when pressing left
         if (PLAYER_1.DPAD.left) {
-            leftBubble.durationRemaining = 200;
+            leftBubble.durationRemaining = BUBBLE_ANIMATION_DURATION;
             leftActive = true
         } else {
             // release the key
@@ -184,14 +171,9 @@ const sketch = (p: p5) => {
             }
         }
 
-        if (leftBubble.durationRemaining > 0) {
-            leftBubble.draw(p, 20, 140, leftBubble.text);
-            leftBubble.durationRemaining--;
-        }
-
         // Draw bubble when pressing right
         if (PLAYER_1.DPAD.right) {
-            rightBubble.durationRemaining = 200;
+            rightBubble.durationRemaining = BUBBLE_ANIMATION_DURATION;
             rightActive = true
         } else {
             // release the key
@@ -205,14 +187,9 @@ const sketch = (p: p5) => {
             }
         }
 
-        if (rightBubble.durationRemaining > 0) {
-            rightBubble.draw(p, 200, 140, rightBubble.text);
-            rightBubble.durationRemaining--;
-        }
-
         // Draw bubble when pressing down
         if (PLAYER_1.DPAD.down) {
-            downBubble.durationRemaining = 200;
+            downBubble.durationRemaining = BUBBLE_ANIMATION_DURATION;
             downActive = true
         } else {
             // release the key
@@ -226,32 +203,46 @@ const sketch = (p: p5) => {
             }
         }
 
+        // Cat Animation
+        if (catAnimationTime > 0) {
+            animated = true;
+            catAnimationTime--;
+        } else {
+            frameCount = 0;
+            animated = false
+        }
+
+        // Draw cat
+        p.image(currentCatImage,
+            cat_pos.x - currentCatImage.width / 2,
+            cat_pos.y - currentCatImage.height / 2);
+
+        // Draw rectangle under the cat
+        p.fill(100, 200, 100);
+        p.noStroke();
+        p.rect(0, cat_pos.y + 32, WIDTH, HEIGHT - (cat_pos.y + 32));
+
+
+        // Draw bubbles
+        if (upBubble.durationRemaining > 0) {
+            upBubble.draw(p, 40, 40, upBubble.text);
+            upBubble.durationRemaining--;
+        }
+
+        if (leftBubble.durationRemaining > 0) {
+            leftBubble.draw(p, 20, 140, leftBubble.text);
+            leftBubble.durationRemaining--;
+        }
+
+        if (rightBubble.durationRemaining > 0) {
+            rightBubble.draw(p, 200, 140, rightBubble.text);
+            rightBubble.durationRemaining--;
+        }
+
         if (downBubble.durationRemaining > 0) {
             downBubble.draw(p, 200, 60, downBubble.text);
             downBubble.durationRemaining--;
         }
-
-        if (catAnimationTime > 0) {
-            animated = true;
-            catAnimationTime--;
-        } else {
-            frameCount = 0;
-            animated = false
-        }
-
-
-
-        // Cat Animation
-
-        if (catAnimationTime > 0) {
-            animated = true;
-            catAnimationTime--;
-        } else {
-            frameCount = 0;
-            animated = false
-        }
-
-
     };
 };
 
