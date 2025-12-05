@@ -6,6 +6,7 @@ import { PLAYER_1, SYSTEM } from "@rcade/plugin-input-classic";
 const WIDTH = 336;
 const HEIGHT = 262;
 
+const CAT_ANIMATION_DURATION = 300;
 const ANIMATION_FRAMES = 10;
 const MIN_BUBBLE_COUNT = 3;
 
@@ -42,6 +43,7 @@ const sketch = (p: p5) => {
     let animated : boolean;
     let currentFrame = 0;
     let frameCount = 0;
+    let catAnimationTime = 0;
     let bubbleCount = 0;
     // detect key presses
     let upActive = false;
@@ -130,8 +132,8 @@ const sketch = (p: p5) => {
             if (upActive) {
                 bubbleCount++;
                 if (bubbleCount >= MIN_BUBBLE_COUNT) {
-                    animated = true;
                     bubbleCount = 0;
+                    catAnimationTime = CAT_ANIMATION_DURATION;
                 }
                 upActive = false
             }
@@ -140,9 +142,6 @@ const sketch = (p: p5) => {
         if (upBubble.durationRemaining > 0) {
             upBubble.draw(p, 40, 40, upBubble.text);
             upBubble.durationRemaining--;
-        } else {
-            frameCount = 0;
-            animated = false
         }
 
         // Draw bubble when pressing left
@@ -154,16 +153,24 @@ const sketch = (p: p5) => {
             if (leftActive) {
                 bubbleCount++;
                 if (bubbleCount >= MIN_BUBBLE_COUNT) {
-                    animated = true;
                     bubbleCount = 0;
+                    catAnimationTime = CAT_ANIMATION_DURATION;
                 }
                 leftActive = false
             }
         }
 
         if (leftBubble.durationRemaining > 0) {
-            leftBubble.draw(p, 20, 140, 1, leftBubble.text);
+            leftBubble.draw(p, 20, 140, leftBubble.text);
             leftBubble.durationRemaining--;
+        }
+
+        if (catAnimationTime > 0) {
+            animated = true;
+            catAnimationTime--;
+        } else {
+            frameCount = 0;
+            animated = false
         }
     };
 };
