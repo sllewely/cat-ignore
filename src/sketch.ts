@@ -7,6 +7,7 @@ const WIDTH = 336;
 const HEIGHT = 262;
 
 const ANIMATION_FRAMES = 10;
+const MIN_BUBBLE_COUNT = 3;
 
 let spritesheet: p5.Image;
 
@@ -45,6 +46,8 @@ const sketch = (p: p5) => {
     let animated : boolean;
     let currentFrame = 0;
     let frameCount = 0;
+    let bubbleCount = 0;
+    let upActive = false;
     const speed = 4;
     const ballSize = 20;
     let gameStarted = false;
@@ -119,8 +122,18 @@ const sketch = (p: p5) => {
         // Draw bubble when pressing up
         if (PLAYER_1.DPAD.up) {
             upBubble.durationRemaining = 200;
-            animated = true;
+            upActive = true
+        } else {
+            if (upActive) {
+                bubbleCount++;
+                if (bubbleCount >= MIN_BUBBLE_COUNT) {
+                    animated = true;
+                    bubbleCount = 0;
+                }
+                upActive = false
+            }
         }
+
         if (upBubble.durationRemaining > 0) {
             upBubble.draw(p, cat_pos.x, cat_pos.y - 50, 1, upBubble.text);
             upBubble.durationRemaining--;
