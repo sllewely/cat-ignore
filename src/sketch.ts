@@ -15,7 +15,7 @@ let thwap1: p5.Image;
 let thwap2: p5.Image;
 let thwap3: p5.Image;
 
-const cat_pos = { x: 120, y: 120 };
+const cat_pos = { x: (WIDTH / 2), y: (HEIGHT / 2) - 32 };
 
 const sketch = (p: p5) => {
     let x: number;
