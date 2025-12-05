@@ -73,7 +73,6 @@ const sketch = (p: p5) => {
         draw: drawBubble,
     };
 
-
     p.draw = () => {
         p.background(200, 240, 120);
 
@@ -120,22 +119,15 @@ const sketch = (p: p5) => {
             cat_pos.x - currentCatImage.width / 2,
             cat_pos.y - currentCatImage.height / 2);
 
-
-
         // Draw bubble when pressing up
         if (PLAYER_1.DPAD.up) {
-        
             upBubble.durationRemaining = 200;
+            animated = true;
         }
         if (upBubble.durationRemaining > 0) {
             upBubble.draw(p, cat_pos.x, cat_pos.y - 50, 1);
             upBubble.durationRemaining--;
-        }
-
-        // Make cat animated when pressing A
-        if (PLAYER_1.A) {
-            animated = true;
-        } else if (PLAYER_1.B) {
+        } else {
             frameCount = 0;
             animated = false
         }
