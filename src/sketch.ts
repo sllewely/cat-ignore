@@ -8,6 +8,11 @@ const HEIGHT = 262;
 
 let spritesheet: p5.Image;
 
+let sittingcat: p5.Image;
+let thwap1: p5.Image;
+let thwap2: p5.Image;
+let thwap3: p5.Image;
+
 
 const sketch = (p: p5) => {
     let x: number;
@@ -19,6 +24,10 @@ const sketch = (p: p5) => {
     p.preload = () => {
         // let explode_sprite_sheet = loadSpriteSheet('../assets/Catthwap.png', 64, 64, 4);
         spritesheet = p.loadImage('../assets/Catthwap.png');
+        sittingcat = p.loadImage('../assets/00_Catthwap.png');
+        thwap1 = p.loadImage('../assets/01_Catthwap.png');
+        thwap2 = p.loadImage('../assets/02_Catthwap.png');
+        thwap3 = p.loadImage('../assets/03_Catthwap.png');
     };
 
     p.setup = () => {
@@ -44,6 +53,8 @@ const sketch = (p: p5) => {
             }
             return;
         }
+
+        p.image(sittingcat, 120 - sittingcat.width / 2, 120 - sittingcat.height / 2);
 
         // Handle input from arcade controls
         if (PLAYER_1.DPAD.up) {
