@@ -26,17 +26,22 @@ const drawBubble = (p: p5, x: number, y: number, text: string) => {
     p.fill(255);
     p.stroke(0);
     p.strokeWeight(1);
-    p.rect(x, y, 80, 40, 20);
+    p.rect(x, y, 120, 40, 20);
 
-    // draw arrow
-    p.triangle(x + 40 - 10, y + 40, x + 40 + 10, y + 40, x - 20, y + 80);
+    // draw triangle pointer
+    if (x > WIDTH/2) {
+        p.triangle(x + 40 - 10, y + 40, x + 40 + 10, y + 40, x + 100, y + 80);
+    } else {
+        p.triangle(x + 40 - 10, y + 40, x + 40 + 10, y + 40, x - 20, y + 80);
+    }
+    
 
     // draw text
     p.fill(0);
     p.noStroke();
     p.textSize(12);
     p.textAlign(p.CENTER, p.CENTER);
-    p.text(text, x + 40, y + 20);
+    p.text(text, x + 60, y + 20);
 };
 
 const sketch = (p: p5) => {
@@ -50,7 +55,7 @@ const sketch = (p: p5) => {
     let leftActive = false;
     let rightActive = false;
     let downActive = false;
-    
+
     let gameStarted = false;
 
     p.preload = () => {
@@ -74,6 +79,18 @@ const sketch = (p: p5) => {
     let leftBubble = {
         durationRemaining: 0,
         text: "Hi Sauce baby",
+        draw: drawBubble,
+    };
+
+    let rightBubble = {
+        durationRemaining: 0,
+        text: "You're the best cat",
+        draw: drawBubble,
+    };
+
+    let downBubble = {
+        durationRemaining: 0,
+        text: "Don't ignore me :(",
         draw: drawBubble,
     };
 
@@ -133,7 +150,7 @@ const sketch = (p: p5) => {
                 bubbleCount++;
                 if (bubbleCount >= MIN_BUBBLE_COUNT) {
                     bubbleCount = 0;
-                    catAnimationTime = CAT_ANIMATION_DURATION;
+                    
                 }
                 upActive = false
             }
@@ -165,6 +182,48 @@ const sketch = (p: p5) => {
             leftBubble.durationRemaining--;
         }
 
+        // Draw bubble when pressing right
+        if (PLAYER_1.DPAD.right) {
+            rightBubble.durationRemaining = 200;
+            rightActive = true
+        } else {
+            // release the key
+            if (rightActive) {
+                bubbleCount++;
+                if (bubbleCount >= MIN_BUBBLE_COUNT) {
+                    catAnimationTime = CAT_ANIMATION_DURATION;
+                    bubbleCount = 0;
+                }
+                rightActive = false
+            }
+        }
+
+        if (rightBubble.durationRemaining > 0) {
+            rightBubble.draw(p, 200, 140, rightBubble.text);
+            rightBubble.durationRemaining--;
+        }
+
+        // Draw bubble when pressing down
+        if (PLAYER_1.DPAD.down) {
+            downBubble.durationRemaining = 200;
+            downActive = true
+        } else {
+            // release the key
+            if (downActive) {
+                bubbleCount++;
+                if (bubbleCount >= MIN_BUBBLE_COUNT) {
+                    catAnimationTime = CAT_ANIMATION_DURATION;
+                    bubbleCount = 0;
+                }
+                downActive = false
+            }
+        }
+
+        if (downBubble.durationRemaining > 0) {
+            downBubble.draw(p, 200, 60, downBubble.text);
+            downBubble.durationRemaining--;
+        }
+
         if (catAnimationTime > 0) {
             animated = true;
             catAnimationTime--;
@@ -172,6 +231,20 @@ const sketch = (p: p5) => {
             frameCount = 0;
             animated = false
         }
+
+
+
+        // Cat Animation
+
+        if (catAnimationTime > 0) {
+            animated = true;
+            catAnimationTime--;
+        } else {
+            frameCount = 0;
+            animated = false
+        }
+
+
     };
 };
 
