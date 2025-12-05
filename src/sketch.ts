@@ -1,9 +1,13 @@
 import p5 from "p5";
+
 import { PLAYER_1, SYSTEM } from "@rcade/plugin-input-classic";
 
 // Rcade game dimensions
 const WIDTH = 336;
 const HEIGHT = 262;
+
+let spritesheet: p5.Image;
+
 
 const sketch = (p: p5) => {
     let x: number;
@@ -12,6 +16,11 @@ const sketch = (p: p5) => {
     const ballSize = 20;
     let gameStarted = false;
 
+    p.preload = () => {
+        // let explode_sprite_sheet = loadSpriteSheet('../assets/Catthwap.png', 64, 64, 4);
+        spritesheet = p.loadImage('../assets/Catthwap.png');
+    };
+
     p.setup = () => {
         p.createCanvas(WIDTH, HEIGHT);
         x = WIDTH / 2;
@@ -19,7 +28,7 @@ const sketch = (p: p5) => {
     };
 
     p.draw = () => {
-        p.background(26, 26, 46);
+        p.background(200, 240, 120);
 
         if (!gameStarted) {
             // Show start screen
