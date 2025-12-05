@@ -22,10 +22,23 @@ const drawBubble = (p: p5, x: number, y: number, size: number) => {
     // display the speech bubble
     // it persists for a short amount of time
 
+    // draw rect bubble
     p.fill(255);
     p.stroke(0);
     p.strokeWeight(1);
     p.rect(80, 40, 80, 40, 20);
+
+    // draw arrow
+    p.triangle(120 - 10, 80, 120 + 10, 80, 60, 120);
+
+    // draw text
+    p.fill(0);
+    p.noStroke();
+    p.textSize(12);
+    p.textAlign(p.CENTER, p.CENTER);
+    p.text("I love you cat", 120, 60);
+
+    
 
 };
 
