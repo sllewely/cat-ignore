@@ -6,6 +6,8 @@ import { PLAYER_1, SYSTEM } from "@rcade/plugin-input-classic";
 const WIDTH = 336;
 const HEIGHT = 262;
 
+const ANIMATION_FRAMES = 10;
+
 let spritesheet: p5.Image;
 
 let sittingcat: p5.Image;
@@ -13,16 +15,19 @@ let thwap1: p5.Image;
 let thwap2: p5.Image;
 let thwap3: p5.Image;
 
+const cat_pos = { x: 120, y: 120 };
 
 const sketch = (p: p5) => {
     let x: number;
     let y: number;
+    let animated : bool;
+    let currentFrame = 0;
+    let frameCount = 0;
     const speed = 4;
     const ballSize = 20;
     let gameStarted = false;
 
     p.preload = () => {
-        // let explode_sprite_sheet = loadSpriteSheet('../assets/Catthwap.png', 64, 64, 4);
         spritesheet = p.loadImage('../assets/Catthwap.png');
         sittingcat = p.loadImage('../assets/00_Catthwap.png');
         thwap1 = p.loadImage('../assets/01_Catthwap.png');
@@ -34,6 +39,7 @@ const sketch = (p: p5) => {
         p.createCanvas(WIDTH, HEIGHT);
         x = WIDTH / 2;
         y = HEIGHT / 2;
+        animated = false;
     };
 
     p.draw = () => {
@@ -54,36 +60,41 @@ const sketch = (p: p5) => {
             return;
         }
 
-        p.image(sittingcat, 120 - sittingcat.width / 2, 120 - sittingcat.height / 2);
+        // Draw cat
+        let currentCatImage = sittingcat;
+        if (animated) {
+            frameCount++;
+            if (frameCount == ANIMATION_FRAMES) {
+                currentFrame = (currentFrame + 1) % 4;
+                frameCount = 0;
+            }
+            switch (currentFrame) {
+                case 0:
+                    currentCatImage = sittingcat;
+                    break;
+                case 1:
+                    currentCatImage = thwap1;
+                    break; 
+                case 2:
+                    currentCatImage = thwap2;
+                    break;
+                case 3:
+                    currentCatImage = thwap3;
+                    break;
+            }
+        }
 
-        // Handle input from arcade controls
-        if (PLAYER_1.DPAD.up) {
-            y -= speed;
-        }
-        if (PLAYER_1.DPAD.down) {
-            y += speed;
-        }
-        if (PLAYER_1.DPAD.left) {
-            x -= speed;
-        }
-        if (PLAYER_1.DPAD.right) {
-            x += speed;
-        }
+        p.image(currentCatImage,
+            cat_pos.x - currentCatImage.width / 2,
+            cat_pos.y - currentCatImage.height / 2);
 
-        // Keep ball in bounds
-        x = p.constrain(x, ballSize / 2, WIDTH - ballSize / 2);
-        y = p.constrain(y, ballSize / 2, HEIGHT - ballSize / 2);
-
-        // Draw ball (change color when A is pressed)
+        // Make cat animated when pressing A
         if (PLAYER_1.A) {
-            p.fill(255, 100, 100);
+            animated = true;
         } else if (PLAYER_1.B) {
-            p.fill(100, 255, 100);
-        } else {
-            p.fill(100, 200, 255);
+            frameCount = 0;
+            animated = false
         }
-        p.noStroke();
-        p.ellipse(x, y, ballSize, ballSize);
     };
 };
 
