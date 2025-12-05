@@ -1,0 +1,16 @@
+{
+  "$schema": "https://rcade.dev/manifest.schema.json",
+  "name": "cat-ignore",
+  "display_name": "Your Cat",
+  "description": "Get the attention of your cat",
+  "visibility": "public",
+  "authors": {
+    "display_name": "sarah nadia"
+  },
+  "dependencies": [
+    {
+      "name": "@rcade/input-classic",
+      "version": "1.0.0"
+    }
+  ]
+}
