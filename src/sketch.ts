@@ -80,10 +80,10 @@ const increaseBubbleCount = (count: number, cat: Cat) => {
 }
 
 const sketch = (p: p5) => {
-    let sittingcat: p5.Image;
-    let thwap1: p5.Image;
-    let thwap2: p5.Image;
-    let thwap3: p5.Image;
+    let sittingCat: p5.Image;
+    let movingCat1: p5.Image;
+    let movingCat2: p5.Image;
+    let movingCat3: p5.Image;
 
     // Cat animation variables
     let cat : Cat = {
@@ -127,10 +127,10 @@ const sketch = (p: p5) => {
     let downActive = false;
 
     p.preload = () => {
-        sittingcat = p.loadImage(cat1);
-        thwap1 = p.loadImage(cat2);
-        thwap2 = p.loadImage(cat3);
-        thwap3 = p.loadImage(cat4);
+        sittingCat = p.loadImage(cat1);
+        movingCat1 = p.loadImage(cat2);
+        movingCat2 = p.loadImage(cat3);
+        movingCat3 = p.loadImage(cat4);
     };
 
     p.setup = () => {
@@ -196,7 +196,7 @@ const sketch = (p: p5) => {
         }
 
         // Choose cat image
-        let currentCatImage = sittingcat;
+        let currentCatImage = sittingCat;
         if (cat.animated) {
             cat.frameCount++;
             if (cat.frameCount == ANIMATION_FRAMES) {
@@ -206,16 +206,16 @@ const sketch = (p: p5) => {
 
             switch (cat.currentFrame) {
                 case 0:
-                    currentCatImage = sittingcat;
+                    currentCatImage = sittingCat;
                     break;
                 case 1:
-                    currentCatImage = thwap1;
+                    currentCatImage = movingCat1;
                     break; 
                 case 2:
-                    currentCatImage = thwap2;
+                    currentCatImage = movingCat2;
                     break;
                 case 3:
-                    currentCatImage = thwap3;
+                    currentCatImage = movingCat3;
                     break;
             }
         }
