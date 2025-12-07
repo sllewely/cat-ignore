@@ -7,6 +7,13 @@ import cat2 from '/01_Catthwap.png';
 import cat3 from '/02_Catthwap.png';
 import cat4 from '/03_Catthwap.png';
 
+type Cat =  {
+    animated: boolean;
+    currentFrame: number;
+    frameCount: number;
+    animationTime: number;
+}
+
 // Rcade game dimensions
 const WIDTH = 336;
 const HEIGHT = 262;
@@ -16,18 +23,14 @@ const CAT_ANIMATION_DURATION = 300;
 const ANIMATION_FRAMES = 10;
 const MIN_BUBBLE_COUNT = 3;
 
+// Cat position
+const cat_pos = { x: (WIDTH / 2), y: (HEIGHT / 2) - 32 };
+
 // Bubble constants
 const BUBBLE_ANIMATION_DURATION = 200;
 const BUBBLE_WIDTH = 120;
 const BUBBLE_HEIGHT = 40;
 const BUBBLE_X_OFFSET = 40;
-
-let sittingcat: p5.Image;
-let thwap1: p5.Image;
-let thwap2: p5.Image;
-let thwap3: p5.Image;
-
-const cat_pos = { x: (WIDTH / 2), y: (HEIGHT / 2) - 32 };
 
 const drawBubble = (p: p5, x: number, y: number, text: string) => {
     // press a button
@@ -67,31 +70,32 @@ const drawBubble = (p: p5, x: number, y: number, text: string) => {
     p.text(text, x + 60, y + 20);
 };
 
+const increaseBubbleCount = (count: number, cat: Cat) => {
+    count++;
+    if (count >= MIN_BUBBLE_COUNT) {
+        cat.animationTime = CAT_ANIMATION_DURATION;
+        count = 0;
+    }
+
+    return count;
+}
+
 const sketch = (p: p5) => {
-    let animated : boolean;
-    let currentFrame = 0;
-    let frameCount = 0;
-    let catAnimationTime = 0;
+    let sittingcat: p5.Image;
+    let thwap1: p5.Image;
+    let thwap2: p5.Image;
+    let thwap3: p5.Image;
+
+    // Cat animation variables
+    let cat : Cat = {
+        animated: false,
+        currentFrame: 0,
+        frameCount: 0,
+        animationTime: 0,
+    }
+
+    // Bubble animation variables
     let bubbleCount = 0;
-    // detect key presses
-    let upActive = false;
-    let leftActive = false;
-    let rightActive = false;
-    let downActive = false;
-
-    let gameStarted = false;
-
-    p.preload = () => {
-        sittingcat = p.loadImage(cat1);
-        thwap1 = p.loadImage(cat2);
-        thwap2 = p.loadImage(cat3);
-        thwap3 = p.loadImage(cat4);
-    };
-
-    p.setup = () => {
-        p.createCanvas(WIDTH, HEIGHT);
-        animated = false;
-    };
 
     let upBubble = {
         durationRemaining: 0,
@@ -117,6 +121,25 @@ const sketch = (p: p5) => {
         draw: drawBubble,
     };
 
+    // Key presses variables
+    let upActive = false;
+    let leftActive = false;
+    let rightActive = false;
+    let downActive = false;
+
+    let gameStarted = false;
+
+    p.preload = () => {
+        sittingcat = p.loadImage(cat1);
+        thwap1 = p.loadImage(cat2);
+        thwap2 = p.loadImage(cat3);
+        thwap3 = p.loadImage(cat4);
+    };
+
+    p.setup = () => {
+        p.createCanvas(WIDTH, HEIGHT);
+    };
+
     p.draw = () => {
         p.background(200, 240, 120);
 
@@ -137,13 +160,14 @@ const sketch = (p: p5) => {
 
         // Choose cat image
         let currentCatImage = sittingcat;
-        if (animated) {
-            frameCount++;
-            if (frameCount == ANIMATION_FRAMES) {
-                currentFrame = (currentFrame + 1) % 4;
-                frameCount = 0;
+        if (cat.animated) {
+            cat.frameCount++;
+            if (cat.frameCount == ANIMATION_FRAMES) {
+                cat.currentFrame = (cat.currentFrame + 1) % 4;
+                cat.frameCount = 0;
             }
-            switch (currentFrame) {
+
+            switch (cat.currentFrame) {
                 case 0:
                     currentCatImage = sittingcat;
                     break;
@@ -166,11 +190,7 @@ const sketch = (p: p5) => {
         } else {
             // release the key
             if (upActive) {
-                bubbleCount++;
-                if (bubbleCount >= MIN_BUBBLE_COUNT) {
-                    bubbleCount = 0;
-                    
-                }
+                bubbleCount = increaseBubbleCount(bubbleCount, cat);
                 upActive = false
             }
         }
@@ -182,11 +202,7 @@ const sketch = (p: p5) => {
         } else {
             // release the key
             if (leftActive) {
-                bubbleCount++;
-                if (bubbleCount >= MIN_BUBBLE_COUNT) {
-                    bubbleCount = 0;
-                    catAnimationTime = CAT_ANIMATION_DURATION;
-                }
+                bubbleCount = increaseBubbleCount(bubbleCount, cat);
                 leftActive = false
             }
         }
@@ -198,11 +214,7 @@ const sketch = (p: p5) => {
         } else {
             // release the key
             if (rightActive) {
-                bubbleCount++;
-                if (bubbleCount >= MIN_BUBBLE_COUNT) {
-                    catAnimationTime = CAT_ANIMATION_DURATION;
-                    bubbleCount = 0;
-                }
+                bubbleCount = increaseBubbleCount(bubbleCount, cat);
                 rightActive = false
             }
         }
@@ -214,22 +226,18 @@ const sketch = (p: p5) => {
         } else {
             // release the key
             if (downActive) {
-                bubbleCount++;
-                if (bubbleCount >= MIN_BUBBLE_COUNT) {
-                    catAnimationTime = CAT_ANIMATION_DURATION;
-                    bubbleCount = 0;
-                }
+                bubbleCount = increaseBubbleCount(bubbleCount, cat);
                 downActive = false
             }
         }
 
         // Cat Animation
-        if (catAnimationTime > 0) {
-            animated = true;
-            catAnimationTime--;
+        if (cat.animationTime > 0) {
+            cat.animated = true;
+            cat.animationTime--;
         } else {
-            frameCount = 0;
-            animated = false
+            cat.frameCount = 0;
+            cat.animated = false
         }
 
         // Draw cat
@@ -241,7 +249,6 @@ const sketch = (p: p5) => {
         p.fill(100, 200, 100);
         p.noStroke();
         p.rect(0, cat_pos.y + 32, WIDTH, HEIGHT - (cat_pos.y + 32));
-
 
         // Draw bubbles
         if (upBubble.durationRemaining > 0) {
