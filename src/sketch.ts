@@ -7,7 +7,6 @@ import cat3 from '/02_Catthwap.png';
 import cat4 from '/03_Catthwap.png';
 
 type Cat =  {
-    animated: boolean;
     currentFrame: number;
     frameCount: number;
     animationTime: number;
@@ -99,7 +98,6 @@ const sketch = (p: p5) => {
 
     // Cat animation variables
     let cat : Cat = {
-        animated: false,
         currentFrame: 0,
         frameCount: 0,
         animationTime: 0,
@@ -112,7 +110,7 @@ const sketch = (p: p5) => {
     let rightBubble = new Bubble("You're the best cat");
     let downBubble = new Bubble("Don't ignore me :(");
 
-    // Key presses variables
+    // Key press variables
     let upActive = false;
     let leftActive = false;
     let rightActive = false;
@@ -181,18 +179,10 @@ const sketch = (p: p5) => {
             }
         }
 
-        // Cat Animation
-        if (cat.animationTime > 0) {
-            cat.animated = true;
-            cat.animationTime--;
-        } else {
-            cat.frameCount = 0;
-            cat.animated = false
-        }
-
         // Choose cat image
         let currentCatImage = sittingCat;
-        if (cat.animated) {
+        if (cat.animationTime > 0) {
+            cat.animationTime--;
             cat.frameCount++;
             if (cat.frameCount == ANIMATION_FRAMES) {
                 cat.currentFrame = (cat.currentFrame + 1) % 4;
@@ -213,6 +203,8 @@ const sketch = (p: p5) => {
                     currentCatImage = movingCat3;
                     break;
             }
+        } else {
+            cat.frameCount = 0;
         }
 
         // Draw background
