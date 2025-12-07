@@ -13,6 +13,22 @@ type Cat =  {
     animationTime: number;
 }
 
+class Bubble {
+    durationRemaining: number;
+    text: string;
+    draw: (p: p5, x: number, y: number, text: string) => void;
+
+    constructor(text: string) {
+        this.durationRemaining = 0;
+        this.text = text;
+        this.draw = drawBubble;
+    }
+
+    initalizeAnimation() {
+        this.durationRemaining = BUBBLE_ANIMATION_DURATION;
+    }
+}
+
 // Rcade game dimensions
 const WIDTH = 336;
 const HEIGHT = 262;
@@ -32,17 +48,13 @@ const BUBBLE_HEIGHT = 40;
 const BUBBLE_X_OFFSET = 40;
 
 const drawBubble = (p: p5, x: number, y: number, text: string) => {
-    // press a button
-    // display the speech bubble
-    // it persists for a short amount of time
-
-    // draw rect bubble
+    // Draw bubble rounded rectangle
     p.fill(255);
     p.stroke(0);
     p.strokeWeight(1);
     p.rect(x, y, BUBBLE_WIDTH, BUBBLE_HEIGHT, 20);
 
-    // draw triangle pointer
+    // Draw triangle pointer
     if (x > WIDTH / 2) {
         p.triangle(
             x + BUBBLE_X_OFFSET - 10,
@@ -61,7 +73,7 @@ const drawBubble = (p: p5, x: number, y: number, text: string) => {
             y + BUBBLE_HEIGHT * 2);
     }
 
-    // draw text
+    // Draw text
     p.fill(0);
     p.noStroke();
     p.textSize(12);
@@ -92,33 +104,13 @@ const sketch = (p: p5) => {
         frameCount: 0,
         animationTime: 0,
     }
-
-    // Bubble animation variables
     let bubbleCount = 0;
 
-    let upBubble = {
-        durationRemaining: 0,
-        text: "I love you cat",
-        draw: drawBubble,
-    };
-
-    let leftBubble = {
-        durationRemaining: 0,
-        text: "Hi Sauce baby",
-        draw: drawBubble,
-    };
-
-    let rightBubble = {
-        durationRemaining: 0,
-        text: "You're the best cat",
-        draw: drawBubble,
-    };
-
-    let downBubble = {
-        durationRemaining: 0,
-        text: "Don't ignore me :(",
-        draw: drawBubble,
-    };
+    // Bubble animation variables
+    let upBubble = new Bubble("I love you cat");
+    let leftBubble = new Bubble("Hi Sauce baby");
+    let rightBubble = new Bubble("You're the best cat");
+    let downBubble = new Bubble("Don't ignore me :(");
 
     // Key presses variables
     let upActive = false;
@@ -138,21 +130,24 @@ const sketch = (p: p5) => {
     };
 
     p.draw = () => {
-        // Draw bubble when pressing up
+        // After pressing up, down, left, right button, display the speech bubble
+        // And persist it for a short amount of time
+
+        // Initialize bubble animation when pressing up
         if (PLAYER_1.DPAD.up) {
-            upBubble.durationRemaining = BUBBLE_ANIMATION_DURATION;
+            upBubble.initalizeAnimation();
             upActive = true
         } else {
-            // release the key
+            // Key was released
             if (upActive) {
                 bubbleCount = increaseBubbleCount(bubbleCount, cat);
                 upActive = false
             }
         }
 
-        // Draw bubble when pressing left
+        // Initialize bubble animation when pressing left
         if (PLAYER_1.DPAD.left) {
-            leftBubble.durationRemaining = BUBBLE_ANIMATION_DURATION;
+            leftBubble.initalizeAnimation();
             leftActive = true
         } else {
             // release the key
@@ -162,9 +157,9 @@ const sketch = (p: p5) => {
             }
         }
 
-        // Draw bubble when pressing right
+        // Initialize bubble animation when pressing right
         if (PLAYER_1.DPAD.right) {
-            rightBubble.durationRemaining = BUBBLE_ANIMATION_DURATION;
+            rightBubble.initalizeAnimation();
             rightActive = true
         } else {
             // release the key
@@ -174,9 +169,9 @@ const sketch = (p: p5) => {
             }
         }
 
-        // Draw bubble when pressing down
+        // Initialize bubble animation when pressing down
         if (PLAYER_1.DPAD.down) {
-            downBubble.durationRemaining = BUBBLE_ANIMATION_DURATION;
+            downBubble.initalizeAnimation();
             downActive = true
         } else {
             // release the key
