@@ -1,6 +1,5 @@
 import p5 from "p5";
-
-import { PLAYER_1, SYSTEM } from "@rcade/plugin-input-classic";
+import { PLAYER_1 } from "@rcade/plugin-input-classic";
 
 import cat1 from '/00_Catthwap.png';
 import cat2 from '/01_Catthwap.png';
@@ -127,8 +126,6 @@ const sketch = (p: p5) => {
     let rightActive = false;
     let downActive = false;
 
-    let gameStarted = false;
-
     p.preload = () => {
         sittingcat = p.loadImage(cat1);
         thwap1 = p.loadImage(cat2);
@@ -141,48 +138,6 @@ const sketch = (p: p5) => {
     };
 
     p.draw = () => {
-        p.background(200, 240, 120);
-
-        if (!gameStarted) {
-            // Show start screen
-            p.fill(255);
-            p.textSize(18);
-            p.textAlign(p.CENTER, p.CENTER);
-            p.text("Press 1P START", WIDTH / 2, HEIGHT / 2);
-            p.textSize(12);
-            p.text("Use D-PAD to move", WIDTH / 2, HEIGHT / 2 + 30);
-
-            if (SYSTEM.ONE_PLAYER) {
-                gameStarted = true;
-            }
-            return;
-        }
-
-        // Choose cat image
-        let currentCatImage = sittingcat;
-        if (cat.animated) {
-            cat.frameCount++;
-            if (cat.frameCount == ANIMATION_FRAMES) {
-                cat.currentFrame = (cat.currentFrame + 1) % 4;
-                cat.frameCount = 0;
-            }
-
-            switch (cat.currentFrame) {
-                case 0:
-                    currentCatImage = sittingcat;
-                    break;
-                case 1:
-                    currentCatImage = thwap1;
-                    break; 
-                case 2:
-                    currentCatImage = thwap2;
-                    break;
-                case 3:
-                    currentCatImage = thwap3;
-                    break;
-            }
-        }
-
         // Draw bubble when pressing up
         if (PLAYER_1.DPAD.up) {
             upBubble.durationRemaining = BUBBLE_ANIMATION_DURATION;
@@ -239,6 +194,34 @@ const sketch = (p: p5) => {
             cat.frameCount = 0;
             cat.animated = false
         }
+
+        // Choose cat image
+        let currentCatImage = sittingcat;
+        if (cat.animated) {
+            cat.frameCount++;
+            if (cat.frameCount == ANIMATION_FRAMES) {
+                cat.currentFrame = (cat.currentFrame + 1) % 4;
+                cat.frameCount = 0;
+            }
+
+            switch (cat.currentFrame) {
+                case 0:
+                    currentCatImage = sittingcat;
+                    break;
+                case 1:
+                    currentCatImage = thwap1;
+                    break; 
+                case 2:
+                    currentCatImage = thwap2;
+                    break;
+                case 3:
+                    currentCatImage = thwap3;
+                    break;
+            }
+        }
+
+        // Draw background
+        p.background(200, 240, 120);
 
         // Draw cat
         p.image(currentCatImage,
