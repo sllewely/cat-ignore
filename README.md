@@ -1,8 +1,10 @@
 # Your Cat
 
-Get the attention of your cat
+<img width="640" height="480" alt="rcade-cat-ignore screenshot" src="screenshot-rc-cat-ignore.png" />
 
+A small game built at the [The Recurse Center](https://recurse.com) for the [RCade](https://rcade.recurse.com) by [Sarah Llewelyn](https://github.com/sllewely) and [Nadia Heredia](https://github.com/nadia-nh).
 
+Call out to your cat and try to get its attention by pressing buttons on the RCade.
 
 https://github.com/user-attachments/assets/808fa110-1e17-48e3-a6b3-7a00c8a400c3
 
